@@ -1,0 +1,14 @@
+﻿Build started 6/3/2015 5:08:17 AM.
+     1>Project "C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\be_project\be_project.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\opencv\build\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
+         Source.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\Debug\be_project.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\build\x64\vc11\lib opencv_calib3d248d.lib opencv_contrib248d.lib opencv_core248d.lib opencv_features2d248d.lib opencv_flann248d.lib opencv_gpu248d.lib opencv_highgui248d.lib opencv_imgproc248d.lib opencv_legacy248d.lib opencv_ml248d.lib opencv_nonfree248d.lib opencv_objdetect248d.lib opencv_ocl248d.lib opencv_photo248d.lib opencv_stitching248d.lib opencv_superres248d.lib opencv_ts248d.lib opencv_video248d.lib opencv_videostab248d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\Debug\be_project.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\Debug\be_project.lib" /MACHINE:X86 Debug\Source.obj
+     1>opencv_highgui248d.lib(opencv_highgui248d.dll) : fatal error LNK1112: module machine type 'x64' conflicts with target machine type 'X86'
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V110\Microsoft.CppCommon.targets(611,5): error MSB6006: "link.exe" exited with code 1112.
+     1>Done Building Project "C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\be_project\be_project.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.96
