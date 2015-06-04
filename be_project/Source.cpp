@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <string>
 
 #include <opencv2\core\core.hpp>
 #include <opencv2\features2d\features2d.hpp>
@@ -9,9 +10,6 @@
 #include <opencv2\ml\ml.hpp>
 
 #include <Windows.h>
-
-#define OPEN 0
-#define CLOSE 1
 
 using namespace std;
 using namespace cv;
@@ -22,19 +20,14 @@ class gesture
 	vector<Vec4i> defects;
 	vector<Point> contour;
 	Point2f center;
-	int fingers;
 public:
-	int flag;
+	int fingers;
 	gesture(Point2f cent,vector<Vec4i> index,vector<Point> cont)
 	{
 		center=cent;
 		defects=index;
 		contour=cont;
 		fingers=0;
-
-		if(defects.size()<4)
-			flag=CLOSE;
-		else flag=OPEN;
 	}
 
 	void gesture_main()
@@ -59,8 +52,6 @@ public:
 				fingers++;
 			}
 		}
-
-		cout<<fingers<<"\n";
 	}
 
 	double distance(Point2f pt1,Point2f pt2)
@@ -105,7 +96,9 @@ public:
 	void updatemousepos(int mx,int my)
 	{
 		getmousepos();
-		SetCursorPos(x+mx,y+my);
+		x+=mx;
+		y+=my;
+		SetCursorPos(x,y);
 	}
 	void MouseSetup()
 	{
@@ -197,8 +190,13 @@ int main()
 	vector<double> contour_area;
 	Moments m;
 	Point2f center;
+	Point2f center_old=Point2f(0,0);
 	int display=0;
 	int largest_contour_index;
+	int prev_value=0;
+	int prev_times=0;
+	bool gesture_toggle=false;
+	bool mouse_toggle=false;
 
 	gesture *gesture_obj;
 	mouse mouse_obj;
@@ -229,6 +227,9 @@ int main()
 		vector<vector<int> >hull(1);
 		vector<vector<Point> >hull_pt(1);
 		vector<Vec4i> defects;
+
+		//get mouse position
+		mouse_obj.getmousepos();
 
 		if(!contours.empty())
 		{
@@ -278,8 +279,85 @@ int main()
 
 					gesture_obj=new gesture(center,index,contours[largest_contour_index]);
 					gesture_obj->gesture_main();
+
+					if(gesture_toggle)
+					{
+						char num[10];
+						itoa(gesture_obj->fingers,num,10);
+						putText(frame,num,Point(100,100),CV_FONT_HERSHEY_SCRIPT_SIMPLEX,2,Scalar(100,100,100),2);
+					}
+
+					if(mouse_toggle)
+					{
+						switch (gesture_obj->fingers)
+						{
+						case 0:
+							mouse_obj.updatemousepos(center.x-center_old.x,center.y-center_old.y);
+							break;
+						case 1:
+							if(mouse_obj.flag==0)
+							{
+								if(prev_value==1)
+									prev_times++;
+								else 
+								{
+									prev_value=1;
+									prev_times=0;
+								}
+								if(prev_times==10)
+								{
+									mouse_obj.MouseLeftClick();
+									prev_times=0;
+								}
+							}
+							break;
+						case 2:
+							if(mouse_obj.flag==0)
+							{
+								if(prev_value==2)
+									prev_times++;
+								else 
+								{
+									prev_value=2;
+									prev_times=0;
+								}
+								if(prev_times==10)
+								{
+									mouse_obj.MouseDoubleClick();
+									prev_times=0;
+								}
+							}
+							break;
+						case 3:
+							break;
+						case 4:
+							if(mouse_obj.flag==0)
+							{
+								if(prev_value==4)
+									prev_times++;
+								else 
+								{
+									prev_value=4;
+									prev_times=0;
+								}
+								if(prev_times==10)
+								{
+									mouse_obj.mouse_hold_toggle();
+									prev_times=0;
+								}
+							}
+							break;
+						case 5:
+							mouse_obj.flag=0;
+							break;
+						default:
+							break;
+						}
+					}
+
 					delete(gesture_obj);
 				}
+				center_old=center;
 			}
 		}
 
@@ -303,6 +381,12 @@ int main()
 			return 1;
 		case 'd':
 			display=!display;
+		case 'g':
+			gesture_toggle=!gesture_toggle;
+			break;
+		case 'm':
+			mouse_toggle=!mouse_toggle;
+			break;
 		default:
 			break;
 		}
