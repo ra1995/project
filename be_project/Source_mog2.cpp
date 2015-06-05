@@ -96,7 +96,7 @@ public:
 	void updatemousepos(int mx,int my)
 	{
 		getmousepos();
-		x+=mx;
+		x-=mx;
 		y+=my;
 		SetCursorPos(x,y);
 	}
@@ -228,6 +228,7 @@ int main()
 		ocl::erode(oclmask,oclmask,getStructuringElement(MORPH_ELLIPSE,Size(9,9),Point(4,4)));
 		ocl::erode(oclmask,oclmask,getStructuringElement(MORPH_ELLIPSE,Size(9,9),Point(4,4)));
 		ocl::erode(oclmask,oclmask,getStructuringElement(MORPH_ELLIPSE,Size(9,9),Point(4,4)));
+		ocl::dilate(oclmask,oclmask,getStructuringElement(MORPH_ELLIPSE,Size(9,9),Point(4,4)));
 		oclmask.download(palm_mask);
 
 		//find contours
@@ -262,20 +263,21 @@ int main()
 				drawContours(frame,contours,largest_contour_index,Scalar(255,0,0),2);
 
 				Rect palm_myrect=boundingRect(palm_contours[palm_largest_contour_index]);
+				if(palm_myrect.width*1.2<palm_myrect.height)
+					palm_myrect.height=palm_myrect.width*1.2;
+				//rectangle(frame,myrect,Scalar(0,0,0),2);
 				//rectangle(frame,palm_myrect,Scalar(0,0,0),2);
-				Rect myrect=boundingRect(contours[largest_contour_index]);
-				if(palm_myrect.width*2<myrect.height)
-					myrect.height=palm_myrect.width*2;
-				rectangle(frame,myrect,Scalar(0,0,0),2);
 
 				vector<Point> mycontour;
 				for(int i=0;i<contours[largest_contour_index].size();i++)
 				{
-					if(contours[largest_contour_index][i].y<(myrect.y+myrect.height))
+					if(contours[largest_contour_index][i].y<(palm_myrect.y+palm_myrect.height))
 						mycontour.push_back(contours[largest_contour_index][i]);
 				}
 				contours[largest_contour_index]=mycontour;
 
+				if(!mycontour.empty())
+				{
 				//find center of contour
 				m=moments(contours[largest_contour_index]);
 				center.x=m.m10/m.m00;
@@ -396,6 +398,7 @@ int main()
 				}
 
 				center_old=center;
+				}
 			}
 		}
 
