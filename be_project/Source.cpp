@@ -170,18 +170,18 @@ int main()
 {
 	VideoCapture cap(0);
 	namedWindow("Video",CV_WINDOW_AUTOSIZE);
-	namedWindow("Control",CV_WINDOW_AUTOSIZE);
+	namedWindow("Central",CV_WINDOW_AUTOSIZE);
 	namedWindow("Mask",CV_WINDOW_AUTOSIZE);
 
 	int hmin=0,hmax=180;
 	int smin=0,smax=255;
 	int vmin=0,vmax=255;
-	createTrackbar("Hue Min","Control",&hmin,180,0);
-	createTrackbar("Hue Max","Control",&hmax,180,0);
-	createTrackbar("Sat Min","Control",&smin,255,0);
-	createTrackbar("Sat Max","Control",&smax,255,0);
-	createTrackbar("Val Min","Control",&vmin,255,0);
-	createTrackbar("Val Max","Control",&vmax,255,0);
+	createTrackbar("Hue Min","Central",&hmin,180,0);
+	createTrackbar("Hue Max","Central",&hmax,180,0);
+	createTrackbar("Sat Min","Central",&smin,255,0);
+	createTrackbar("Sat Max","Central",&smax,255,0);
+	createTrackbar("Val Min","Central",&vmin,255,0);
+	createTrackbar("Val Max","Central",&vmax,255,0);
 
 	Mat frame,frame_hsv,mask,img;
 	oclMat oclmask;
@@ -197,9 +197,11 @@ int main()
 	int prev_times=0;
 	bool gesture_toggle=false;
 	bool mouse_toggle=false;
+	bool paint_toggle=false;
 
 	gesture *gesture_obj;
 	mouse mouse_obj;
+	img=Mat(480,640,CV_8UC3);
 
 	while(true)
 	{
@@ -216,10 +218,6 @@ int main()
 		ocl::erode(oclmask,oclmask,getStructuringElement(MORPH_ELLIPSE,Size(5,5),Point(2,2)));
 		ocl::dilate(oclmask,oclmask,getStructuringElement(MORPH_ELLIPSE,Size(5,5),Point(2,2)));
 		oclmask.download(mask);
-
-		//apply mask
-		img=Mat::zeros(frame_hsv.rows,frame_hsv.cols,frame_hsv.type());
-		frame_hsv.copyTo(img,mask);
 
 		//find contours
 		Mat maskcpy=mask.clone();
@@ -283,7 +281,7 @@ int main()
 					if(gesture_toggle)
 					{
 						char num[10];
-						itoa(gesture_obj->fingers,num,10);
+						_itoa(gesture_obj->fingers,num,10);
 						putText(frame,num,Point(100,100),CV_FONT_HERSHEY_SCRIPT_SIMPLEX,2,Scalar(100,100,100),2);
 					}
 
@@ -357,6 +355,12 @@ int main()
 
 					delete(gesture_obj);
 				}
+
+				if(paint_toggle)
+				{
+					line(img,center_old,center,Scalar(0,0,255),2);
+				}
+
 				center_old=center;
 			}
 		}
@@ -386,6 +390,12 @@ int main()
 			break;
 		case 'm':
 			mouse_toggle=!mouse_toggle;
+			break;
+		case 'p':
+			paint_toggle=!paint_toggle;
+			break;
+		case 'c':
+			img=Mat(480,640,CV_8UC3);
 			break;
 		default:
 			break;
