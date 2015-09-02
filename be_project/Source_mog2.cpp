@@ -2,6 +2,7 @@
 #include <vector>
 #include <cmath>
 #include <string>
+#include <time.h>
 
 #include <opencv2\core\core.hpp>
 #include <opencv2\features2d\features2d.hpp>
@@ -170,18 +171,7 @@ int main()
 {
 	VideoCapture cap(0);
 	namedWindow("Video",CV_WINDOW_AUTOSIZE);
-	namedWindow("Central",CV_WINDOW_AUTOSIZE);
 	namedWindow("Mask",CV_WINDOW_AUTOSIZE);
-
-	int hmin=0,hmax=180;
-	int smin=0,smax=255;
-	int vmin=0,vmax=255;
-	createTrackbar("Hue Min","Central",&hmin,180,0);
-	createTrackbar("Hue Max","Central",&hmax,180,0);
-	createTrackbar("Sat Min","Central",&smin,255,0);
-	createTrackbar("Sat Max","Central",&smax,255,0);
-	createTrackbar("Val Min","Central",&vmin,255,0);
-	createTrackbar("Val Max","Central",&vmax,255,0);
 
 	Mat frame,mask,palm_mask,img;
 	oclMat oclframe,oclmask,oclimg;
@@ -191,6 +181,7 @@ int main()
 	vector<vector<Point> > palm_contours;
 	vector<Vec4i> palm_hierarchy;
 	vector<double> palm_contour_area;
+	vector<uchar> outbuf;
 	Moments m;
 	Point2f center;
 	Point2f center_old=Point2f(0,0);
@@ -209,8 +200,21 @@ int main()
 	ocl::MOG2 mog2;
 	img=Mat(480,640,CV_8UC3);
 
+	// fps counter begin
+    time_t start, end;
+    int counter = 0;
+    double sec;
+    double fps;
+    // fps counter end
+
 	while(true)
 	{
+		// fps counter begin
+        if (counter == 0){
+            time(&start);
+        }
+        // fps counter end
+
 		cap>>frame;
 		if(frame.empty())
 			continue;
@@ -318,7 +322,7 @@ int main()
 					{
 						char num[10];
 						_itoa(gesture_obj->fingers,num,10);
-						putText(frame,num,Point(100,100),CV_FONT_HERSHEY_SCRIPT_SIMPLEX,2,Scalar(100,100,100),2);
+						putText(frame,num,Point(100,50),CV_FONT_HERSHEY_SCRIPT_SIMPLEX,1,Scalar(100,100,100),2);
 					}
 
 					if(mouse_toggle)
@@ -363,6 +367,21 @@ int main()
 							}
 							break;
 						case 3:
+							if(mouse_obj.flag==0)
+							{
+								if(prev_value==3)
+									prev_times++;
+								else 
+								{
+									prev_value=3;
+									prev_times=0;
+								}
+								if(prev_times==10)
+								{
+									mouse_obj.MouseRightClick();
+									prev_times=0;
+								}
+							}
 							break;
 						case 4:
 							if(mouse_obj.flag==0)
@@ -402,14 +421,31 @@ int main()
 			}
 		}
 
-		imshow("Mask",mask);
+		// fps counter begin
+        time(&end);
+        counter++;
+        sec = difftime(end, start);
+        fps = counter/sec;
+        if (counter > 30)
+        {
+			char num[10];
+			_itoa(fps,num,10);
+			putText(frame,num,Point(10,50),CV_FONT_HERSHEY_SCRIPT_SIMPLEX,1,Scalar(0,0,100),2);
+		}
+
+		// overflow protection
+        if (counter == (INT_MAX - 1000))
+            counter = 0;
+        // fps counter end
+
+		imshow("Video",frame);
 		switch (display)
 		{
 		case 0:
-			imshow("Video",frame);
+			imshow("Mask",mask);
 			break;
 		case 1:
-			imshow("Video",img);
+			imshow("Mask",palm_mask);
 			break;
 		default:
 			break;
@@ -450,6 +486,7 @@ int main()
 		palm_contours.clear();
 		palm_hierarchy.clear();
 		palm_contour_area.clear();
+		outbuf.clear();
 	}
 	return 0;
 }

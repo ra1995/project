@@ -1,22 +1,23 @@
-﻿Build started 6/6/2015 12:19:34 AM.
-     1>Project "C:\Users\Rishabh\documents\visual studio 2012\Projects\be_project\be_project\be_project.vcxproj" on node 2 (Build target(s)).
+﻿Build started 7/8/2015 2:02:04 PM.
+     1>Project "C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\be_project\be_project.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /IC:\opencv\build\include /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc110.pdb" /Gd /TP /errorReport:prompt Source_mog2.cpp
-         Source_mog2.cpp
-     1>Source_mog2.cpp(220): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>Source_mog2.cpp(253): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
-     1>Source_mog2.cpp(259): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
-     1>Source_mog2.cpp(267): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
-     1>Source_mog2.cpp(283): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>Source_mog2.cpp(284): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>Source_mog2.cpp(320): warning C4996: '_itoa': This function or variable may be unsafe. Consider using _itoa_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files (x86)\Intel\PCSDK\sample\common\include" /I"C:\Program Files (x86)\Intel\PCSDK\include" /I"C:\libjpeg-turbo64\include" /I"C:\jrtplib-3.9.1\src" /IC:\opencv\build\include /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc110.pdb" /Gd /TP /errorReport:prompt Source_stream.cpp
+         Source_stream.cpp
+     1>Source_stream.cpp(333): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>Source_stream.cpp(366): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>Source_stream.cpp(372): warning C4244: '=' : conversion from '__int64' to 'int', possible loss of data
+     1>Source_stream.cpp(380): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>Source_stream.cpp(396): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>Source_stream.cpp(397): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>Source_stream.cpp(433): warning C4996: '_itoa': This function or variable may be unsafe. Consider using _itoa_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\stdlib.h(468) : see declaration of '_itoa'
-     1>Source_mog2.cpp(329): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>Source_stream.cpp(442): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>Source_stream.cpp(261): warning C4101: 'head' : unreferenced local variable
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Rishabh\documents\visual studio 2012\Projects\be_project\x64\Debug\be_project.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\opencv\build\x64\vc11\lib opencv_calib3d248d.lib opencv_contrib248d.lib opencv_core248d.lib opencv_features2d248d.lib opencv_flann248d.lib opencv_gpu248d.lib opencv_highgui248d.lib opencv_imgproc248d.lib opencv_legacy248d.lib opencv_ml248d.lib opencv_nonfree248d.lib opencv_objdetect248d.lib opencv_ocl248d.lib opencv_photo248d.lib opencv_stitching248d.lib opencv_superres248d.lib opencv_ts248d.lib opencv_video248d.lib opencv_videostab248d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Rishabh\documents\visual studio 2012\Projects\be_project\x64\Debug\be_project.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Rishabh\documents\visual studio 2012\Projects\be_project\x64\Debug\be_project.lib" /MACHINE:X64 x64\Debug\Source_mog2.obj
-         be_project.vcxproj -> C:\Users\Rishabh\documents\visual studio 2012\Projects\be_project\x64\Debug\be_project.exe
-     1>Done Building Project "C:\Users\Rishabh\documents\visual studio 2012\Projects\be_project\be_project\be_project.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\x64\Debug\be_project.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files (x86)\Intel\PCSDK\sample\common\lib\x64\v110" /LIBPATH:"C:\Program Files (x86)\Intel\PCSDK\lib\x64" /LIBPATH:"C:\libjpeg-turbo64\lib" /LIBPATH:"C:\jrtplib-3.9.1\build\src\DEBUG" /LIBPATH:C:\opencv\build\x64\vc11\lib libpxcutils_d.lib libpxc_d.lib turbojpeg.lib jpeg.lib jrtplib_d.lib opencv_calib3d248d.lib opencv_contrib248d.lib opencv_core248d.lib opencv_features2d248d.lib opencv_flann248d.lib opencv_gpu248d.lib opencv_highgui248d.lib opencv_imgproc248d.lib opencv_legacy248d.lib opencv_ml248d.lib opencv_nonfree248d.lib opencv_objdetect248d.lib opencv_ocl248d.lib opencv_photo248d.lib opencv_stitching248d.lib opencv_superres248d.lib opencv_ts248d.lib opencv_video248d.lib opencv_videostab248d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\x64\Debug\be_project.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\x64\Debug\be_project.lib" /MACHINE:X64 x64\Debug\Source_stream.obj
+         be_project.vcxproj -> C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\x64\Debug\be_project.exe
+     1>Done Building Project "C:\Users\Rishabh\Documents\Visual Studio 2012\Projects\be_project\be_project\be_project.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.70
+Time Elapsed 00:00:02.90

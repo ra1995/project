@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source_mog2.cpp">
+    <ClCompile Include="senz3d_desktop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

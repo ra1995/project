@@ -1,0 +1,1 @@
+be_project.exe | vlc --demux=rawvideo --rawvid-fps=30 --rawvid-width=640 --rawvid-height=480  --rawvid-chroma=RV24 - --sout "#transcode{vcodec=h264,vb=1024,fps=30,width=640,height=480}:std{access=http{mime=video/x-flv},mux=ffmpeg{mux=flv},dst=:8081/stream.flv}"
