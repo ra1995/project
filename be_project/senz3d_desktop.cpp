@@ -9,6 +9,8 @@
 #include <pxcsession.h>
 #include <pxcsmartptr.h>
 #include <pxccapture.h>
+#include <pxcprojection.h>
+#include <pxcmetadata.h>
 #include <util_pipeline.h>
 
 #include <opencv2\core\core.hpp>
@@ -38,22 +40,22 @@ public:
 
 	void gesture_main()
 	{
-		double mean_defect_distance=0;
+		/*double mean_defect_distance=0;
 
 		for(int i=0;i<defects.size();i++)
 		{
 			mean_defect_distance+=distance(contour[defects[i][2]],center);
 		}
-		mean_defect_distance/=defects.size();
+		mean_defect_distance/=defects.size();*/
 		
 		for(int i=0;i<defects.size();i++)
 		{
 			if(i==0)
-				if(distance(contour[defects[0][0]],center)>(2*mean_defect_distance))
+				if(distance(contour[defects[0][0]],center)>(2*distance(contour[defects[i][2]],center)))
 				{
 					fingers++;
 				}
-			if(distance(contour[defects[i][1]],center)>(2*mean_defect_distance))
+			if(distance(contour[defects[i][1]],center)>(2*distance(contour[defects[i][2]],center)))
 			{
 				fingers++;
 			}
@@ -209,6 +211,16 @@ int main()
 	float sense[3]={1.0,1.5,2.0};
 	int sensitivity=2;
 
+	UtilCapture *capture;
+	PXCSession *session;
+	PXCCapture::Device *device;
+
+	session=pp.QuerySession();
+	capture=pp.QueryCapture();
+	device=capture->QueryDevice();
+	pxcUID uid;
+	device->QueryPropertyAsUID(PXCCapture::Device::PROPERTY_PROJECTION_SERIALIZABLE, &uid);
+
 	while(true)
 	{
 		if (!pp.AcquireFrame(true))
@@ -217,6 +229,10 @@ int main()
 		PXCImage *depth=pp.QueryImage(PXCImage::IMAGE_TYPE_DEPTH);
 		PXCImage::ImageData data_rgb;
 		PXCImage::ImageData data_depth;
+
+		PXCProjection *pj;
+		session->DynamicCast<PXCMetadata>()->CreateSerializable<PXCProjection>(uid,&pj);
+
 		color->AcquireAccess(PXCImage::ACCESS_READ,&data_rgb);
 		depth->AcquireAccess(PXCImage::ACCESS_READ,&data_depth);
 
@@ -365,6 +381,12 @@ int main()
 				center.y=m.m01/m.m00;
 				circle(depth_rgb,center,5,Scalar(0,255,0),2);
 
+				//map 3d to 2d
+				PXCPoint3DF32 dcenter = { (center.x/640)*320, (center.y/480)*240, depth_map.at<unsigned short int>(center)};
+				PXCPointF32 ccenter;
+				pj->MapDepthToColorCoordinates(1,&dcenter,&ccenter);
+				circle(frame,Point2f(ccenter.x,ccenter.y),5,Scalar(0,255,0),2);
+
 				//find convex hull
 				convexHull( Mat(contours[largest_contour_index]), hull[0], false );
 				convexHull( Mat(contours[largest_contour_index]), hull_pt[0], false );
@@ -392,7 +414,7 @@ int main()
 						}
 					}
 
-					gesture_obj=new gesture(center,index,contours[largest_contour_index]);
+					gesture_obj=new gesture(Point2f(rx,ry),index,contours[largest_contour_index]);
 					gesture_obj->gesture_main();
 
 					if(gesture_obj->fingers==0)
@@ -501,6 +523,7 @@ int main()
 			}
 		}
 
+		pj->Release();
 		imshow("Video",frame);
 		switch (display)
 		{
